@@ -3,6 +3,7 @@ package amu.m2sir.malodumont.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -11,11 +12,12 @@ import javax.json.JsonObjectBuilder;
 import org.springframework.stereotype.Service;
 
 import amu.m2sir.malodumont.CloneTwitterSpring.CloneTwitterSpringApplication;
+import amu.m2sir.malodumont.repository.MessageRepository;
 
 @Service
 public class MessageService {
-	//private HibernateUtil hibernateUtil = App.hibernateUtil;
-	//private LikeService likeService = CloneTwitterSpringApplication.likeService;
+	private LikeService likeService = CloneTwitterSpringApplication.likeService;
+	private MessageRepository repository;
 	
 	public MessageService (){
 //		hibernateUtil.executeUpdate( "CREATE TABLE IF NOT EXISTS message " +
@@ -25,24 +27,22 @@ public class MessageService {
 	
 	public JsonArrayBuilder getMessages(String user){
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-//		hibernateUtil.getSession().beginTransaction();
-//		List<Message> list = new ArrayList<Message>(hibernateUtil.getSession().createQuery("from amu.m2sir.malodumont.beans.Message").list() );
-//		List<Like> Likelist = new ArrayList<Like>(hibernateUtil.getSession().createQuery("from amu.m2sir.malodumont.beans.Like").list() );
-//		hibernateUtil.getSession().getTransaction().commit();
-//		hibernateUtil.getSession().flush();
-//		for (int i = 0; i < list.size(); i++) {
-//			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-//			objectBuilder.add("contenu", list.get(i).getContenu());
-//			objectBuilder.add("date", list.get(i).getDate());
-//			objectBuilder.add("auteur", list.get(i).getAuteur());
-//			objectBuilder.add("id", list.get(i).getId());
-//			if(likeService.isAlreadyLike(Likelist, list.get(i).getId(), user) != -1)
+		Iterable<Message> list = repository.findAll();
+		//List<Like> Likelist = new ArrayList<Like>(hibernateUtil.getSession().createQuery("from amu.m2sir.malodumont.model.Like").list() );
+		
+		for (Message m : list) {
+			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+			objectBuilder.add("contenu", m.getContenu());
+			objectBuilder.add("date", m.getDate());
+			objectBuilder.add("auteur", m.getAuteur());
+			objectBuilder.add("id", m.getId());
+//			if(likeService.isAlreadyLike(Likelist, m.getId(), user) != -1)
 //				objectBuilder.add("like", "true");
 //			else
-//				objectBuilder.add("like", "");
-//			objectBuilder.add("nbMessage", nbMessage());
-//			arrayBuilder.add(objectBuilder);
-//		}
+				objectBuilder.add("like", "");
+			objectBuilder.add("nbMessage", nbMessage());
+			arrayBuilder.add(objectBuilder);
+		}
 		return arrayBuilder;
 	}
 	
@@ -54,10 +54,9 @@ public class MessageService {
 		SimpleDateFormat formater = null;
 		formater = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 		message = new Message(contenu, formater.format(aujourdhui), user);
-//		hibernateUtil.getSession().beginTransaction();
-//		hibernateUtil.getSession().save(message);
-//		hibernateUtil.getSession().getTransaction().commit();
-//		hibernateUtil.getSession().flush();
+		
+		repository.save(message);
+
 		objectBuilder.add("contenu", message.getContenu());
 		objectBuilder.add("date", message.getDate());
 		objectBuilder.add("auteur", message.getAuteur());
@@ -69,17 +68,15 @@ public class MessageService {
 	
 	public JsonObjectBuilder getMessage(Long id){
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
-//		hibernateUtil.getSession().beginTransaction();
-//		Message message = (Message) hibernateUtil.getSession().load(Message.class, new Long(id));
-//		if (message == null) {
-//			return objectBuilder;
-//		}
-//		hibernateUtil.getSession().getTransaction().commit();
-//		hibernateUtil.getSession().flush();
-//		objectBuilder.add("contenu", message.getContenu());
-//		objectBuilder.add("date", message.getDate());
-//		objectBuilder.add("auteur", message.getAuteur());
-//		objectBuilder.add("id", message.getId());
+		Optional<Message> optional = repository.findById(new Long(id));
+		if (!optional.isPresent()) {
+			return objectBuilder;
+		}
+		Message message = optional.get();
+		objectBuilder.add("contenu", message.getContenu());
+		objectBuilder.add("date", message.getDate());
+		objectBuilder.add("auteur", message.getAuteur());
+		objectBuilder.add("id", message.getId());
 		objectBuilder.add("nbMessage", nbMessage());
 		return objectBuilder;
 	}
@@ -87,14 +84,13 @@ public class MessageService {
 	public JsonArrayBuilder deleteMessage(String id){
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
-//		hibernateUtil.getSession().beginTransaction();
-//		Object persistentInstance = hibernateUtil.getSession().load(Message.class, new Long(id));
-//		if (persistentInstance != null) {
-//			hibernateUtil.getSession().delete(persistentInstance);
-//		}
-//		hibernateUtil.getSession().getTransaction().commit();
-//		hibernateUtil.getSession().flush();
-		//likeService.deleteLikes(new Long(id));
+
+		Optional<Message> optional = repository.findById(new Long(id));
+		if (optional.isPresent()) {
+			repository.delete(optional.get());
+		}
+
+		likeService.deleteLikes(new Long(id));
 		objectBuilder.add("id", id);
 		objectBuilder.add("nbMessage", nbMessage());
 		arrayBuilder.add(objectBuilder);
@@ -102,14 +98,7 @@ public class MessageService {
 	}
 	
 	public Long nbMessage (){
-//		hibernateUtil.getSession().beginTransaction();
-//		Criteria crit = hibernateUtil.getSession().createCriteria(Message.class);
-//		crit.setProjection(Projections.rowCount());
-//		Long count = (Long)crit.uniqueResult();
-//		hibernateUtil.getSession().getTransaction().commit();
-//		hibernateUtil.getSession().flush();
-		//return count;
-		return 0L;
+		return repository.count();
 	}
 
 }
