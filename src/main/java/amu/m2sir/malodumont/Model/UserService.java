@@ -1,4 +1,4 @@
-package amu.m2sir.malodumont.model;
+package amu.m2sir.malodumont.Model;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;

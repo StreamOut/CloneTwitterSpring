@@ -1,10 +1,10 @@
-package amu.m2sir.malodumont.CloneTwitterSpring;
+package amu.m2sir.malodumont;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import amu.m2sir.malodumont.model.LikeService;
-import amu.m2sir.malodumont.model.MessageService;
+import amu.m2sir.malodumont.Model.*;
+import amu.m2sir.malodumont.Model.MessageService;
 
 @SpringBootApplication
 public class CloneTwitterSpringApplication {

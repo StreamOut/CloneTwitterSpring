@@ -1,4 +1,4 @@
-package amu.m2sir.malodumont.model;
+package amu.m2sir.malodumont.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

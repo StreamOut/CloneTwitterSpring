@@ -1,4 +1,4 @@
-package amu.m2sir.malodumont.controller;
+package amu.m2sir.malodumont.Controller;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import amu.m2sir.malodumont.CloneTwitterSpring.CloneTwitterSpringApplication;
-import amu.m2sir.malodumont.model.MessageService;
+import amu.m2sir.malodumont.CloneTwitterSpringApplication;
+import amu.m2sir.malodumont.Model.MessageService;
 
 @RestController
 public class ApiController {
@@ -22,10 +22,11 @@ public class ApiController {
 	
 	@RequestMapping(value = "/api", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String Submit(@RequestParam(value = "content", required = false) String content,
-	@RequestParam(value = "action", required = false) String action,
-	@RequestParam(value = "id", required = false) String id) 
-	{
+						@RequestParam(value = "action", required = false) String action,
+						@RequestParam(value = "id", required = false) String id) {
 		String sessionUser= (String) httpSession.getAttribute("user") ; // check l ' utilisateur ␣en␣cours
+		if(sessionUser == null)
+			sessionUser = "miiiiiiiiiiiiii";
 	    //JsonObjectBuilder obj = Json.createObjectBuilder();
 	    JsonArrayBuilder array = Json.createArrayBuilder();
 	    //obj.add("user", sessionUser) ;

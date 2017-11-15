@@ -1,4 +1,4 @@
-package amu.m2sir.malodumont.model;
+package amu.m2sir.malodumont.Model;
 
 
 import java.text.SimpleDateFormat;
@@ -9,14 +9,15 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import amu.m2sir.malodumont.CloneTwitterSpring.CloneTwitterSpringApplication;
-import amu.m2sir.malodumont.repository.MessageRepository;
+import amu.m2sir.malodumont.CloneTwitterSpringApplication;
 
 @Service
 public class MessageService {
 	private LikeService likeService = CloneTwitterSpringApplication.likeService;
+	@Autowired
 	private MessageRepository repository;
 	
 	public MessageService (){
@@ -28,6 +29,7 @@ public class MessageService {
 	public JsonArrayBuilder getMessages(String user){
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		Iterable<Message> list = repository.findAll();
+		
 		//List<Like> Likelist = new ArrayList<Like>(hibernateUtil.getSession().createQuery("from amu.m2sir.malodumont.model.Like").list() );
 		
 		for (Message m : list) {
@@ -68,7 +70,7 @@ public class MessageService {
 	
 	public JsonObjectBuilder getMessage(Long id){
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
-		Optional<Message> optional = repository.findById(new Long(id));
+		Optional<Message> optional = repository.find(new Long(id));
 		if (!optional.isPresent()) {
 			return objectBuilder;
 		}

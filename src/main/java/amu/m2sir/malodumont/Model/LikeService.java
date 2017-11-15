@@ -1,4 +1,4 @@
-package amu.m2sir.malodumont.model;
+package amu.m2sir.malodumont.Model;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class LikeService {
                // "(id int, messageId int, likeur varchar(255)); ");
 	}
 	
-	public int isAlreadyLike(List<Like> likes, Long messageId, String user) {
+	public int isAlreadyLike(List<Liike> likes, Long messageId, String user) {
 		for (int i = 0; i < likes.size(); i++)
 			if(likes.get(i).getMessageId().equals(messageId) &&likes.get(i).getLikeur().equals(user))
 				return i;
@@ -28,7 +28,7 @@ public class LikeService {
 	
 	public JsonArrayBuilder like(Long messageId, String user){
 		System.out.println("Id : "+messageId+" user "+user);
-		Like like = new Like(messageId,user);
+		Liike like = new Liike(messageId,user);
 		int already;
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
 //		
@@ -58,8 +58,8 @@ public class LikeService {
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
 
-		Iterable<Like> list = repository.findAll();
-		  for (Like l : list) {
+		Iterable<Liike> list = repository.findAll();
+		  for (Liike l : list) {
 			System.out.println("MessageId : "+ l.getMessageId() + " likeur "+ l.getLikeur());
 			objectBuilder.add("id", l.getMessageId());
 			objectBuilder.add("likeur", l.getLikeur());
@@ -69,8 +69,8 @@ public class LikeService {
 	}
 	
 	public void deleteLikes(Long messageId){
-		Iterable<Like> list = repository.findAll();
-		  for (Like l : list) {
+		Iterable<Liike> list = repository.findAll();
+		  for (Liike l : list) {
 			System.out.println("deleteLikes : "+ l.getMessageId() +" message id :"+messageId);
 			if(l.getMessageId().equals(messageId)){
 				repository.delete(l);

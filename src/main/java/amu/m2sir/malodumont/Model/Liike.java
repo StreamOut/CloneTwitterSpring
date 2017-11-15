@@ -1,4 +1,4 @@
-package amu.m2sir.malodumont.model;
+package amu.m2sir.malodumont.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,18 +6,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Like {
+public class Liike {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private Long messageId;
 	private String likeur;
 	
-	public Like(){
+	public Liike(){
 		
 	}
 	
-	public Like(Long m, String l){
+	public Liike(Long m, String l){
 		this.messageId = m;
 		this.likeur = l;
 	}
