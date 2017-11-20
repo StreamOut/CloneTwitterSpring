@@ -83,7 +83,7 @@
 		    url: 'http://localhost:9999/api',
 		    data: {
 		    	action : 'remove',
-		    	messageId : id
+		    	id : id
 		    },
 		    success: function (result) {
 		        console.log("L'appel Ajax est une réussite.");
@@ -110,7 +110,7 @@
 			    url: 'http://localhost:9999/api',
 			    data: {
 			    	action : 'add',
-			    	contenu : input.value
+			    	content : input.value
 			    },
 			    success: function (result) {
 			        console.log("L'appel Ajax est une réussite.");
@@ -133,7 +133,7 @@
 		    url: 'http://localhost:9999/api',
 		    data: {
 		    	action : 'like',
-		    	messageId : messageId
+		    	id : messageId
 		    },
 		    success: function (result) {
 		        console.log("L'appel Ajax est une réussite.");
@@ -154,7 +154,14 @@
 	function addMessage(contenu, date, ident, nbMessage, auteur, like){
 		$("#tweets #"+ident).remove();
 		console.log("add : "+ident);
-		$("#tweets").append('<div> <h4>coucou</h4> </div>');
+		$("#tweets").append('<div id= "' + ident + '" class="list-group-item">'
+					+ '<h3 class="list-group-item-heading"><i>' + auteur + ' : </i></h3> '
+						+ '<h4 class="list-group-item-text">' + contenu + '</h4> '
+							+ '<p id="footer" class="list-group-item-footer">'+date+' </p> '
+							+ '<button id="like" type="button" onclick="onLikeClick( \'' + ident + '\' )" class="btn btn-success"> Like </button> '
+							+ '<button type="button" onclick="onSuppClick( \'' + ident + '\' )" class="btn btn-danger">Supprimer</button> '
+							+ '<p id="like-footer" class="list-group-item-footer"> like it ! </p> '
+					+ '</div>');
 		likeMessage(ident, like);
 		$("#nbMessages").text("Nombre de Messages : " + nbMessage);
 		console.log(nbMessage);

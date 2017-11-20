@@ -3,7 +3,6 @@ package amu.m2sir.malodumont.Model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Optional;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -13,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import amu.m2sir.malodumont.CloneTwitterSpringApplication;
+import amu.m2sir.malodumont.repository.MessageRepository;
 
 @Service
 public class MessageService {
-	private LikeService likeService = CloneTwitterSpringApplication.likeService;
+	@Autowired
+	private LikeService likeService;
 	@Autowired
 	private MessageRepository repository;
 	
@@ -31,9 +32,9 @@ public class MessageService {
 		Iterable<Message> list = repository.findAll();
 		
 		//List<Like> Likelist = new ArrayList<Like>(hibernateUtil.getSession().createQuery("from amu.m2sir.malodumont.model.Like").list() );
-		
 		for (Message m : list) {
 			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+			System.out.println("LOOOOOL : " + m.getContenu());
 			objectBuilder.add("contenu", m.getContenu());
 			objectBuilder.add("date", m.getDate());
 			objectBuilder.add("auteur", m.getAuteur());
@@ -49,6 +50,7 @@ public class MessageService {
 	}
 	
 	public JsonArrayBuilder addMessage(String contenu, String user){
+		System.out.println("Contenu :" + contenu);
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
 		Message message;
@@ -58,6 +60,7 @@ public class MessageService {
 		message = new Message(contenu, formater.format(aujourdhui), user);
 		
 		repository.save(message);
+		System.out.println(message.getContenu());
 
 		objectBuilder.add("contenu", message.getContenu());
 		objectBuilder.add("date", message.getDate());
@@ -70,11 +73,10 @@ public class MessageService {
 	
 	public JsonObjectBuilder getMessage(Long id){
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
-		Optional<Message> optional = repository.find(new Long(id));
-		if (!optional.isPresent()) {
+		Message message = repository.findOne(new Long(id));
+		if (message == null) {
 			return objectBuilder;
 		}
-		Message message = optional.get();
 		objectBuilder.add("contenu", message.getContenu());
 		objectBuilder.add("date", message.getDate());
 		objectBuilder.add("auteur", message.getAuteur());
@@ -87,9 +89,9 @@ public class MessageService {
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
 
-		Optional<Message> optional = repository.findById(new Long(id));
-		if (optional.isPresent()) {
-			repository.delete(optional.get());
+		Message message = repository.findOne(new Long(id));
+		if (message != null) {
+			repository.delete(message);
 		}
 
 		likeService.deleteLikes(new Long(id));

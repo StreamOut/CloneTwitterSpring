@@ -6,18 +6,17 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import amu.m2sir.malodumont.repository.LikeRepository;
 
 @Service
 public class LikeService {
+	@Autowired
 	private LikeRepository repository;
 	
-	public LikeService(){
-		//hibernateUtil.executeUpdate( "CREATE TABLE IF NOT EXISTS likes " +
-               // "(id int, messageId int, likeur varchar(255)); ");
-	}
+	public LikeService(){}
 	
 	public int isAlreadyLike(List<Liike> likes, Long messageId, String user) {
 		for (int i = 0; i < likes.size(); i++)
@@ -28,22 +27,18 @@ public class LikeService {
 	
 	public JsonArrayBuilder like(Long messageId, String user){
 		System.out.println("Id : "+messageId+" user "+user);
-		Liike like = new Liike(messageId,user);
-		int already;
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
-//		
-//		List<Like> list = new ArrayList<Like>(hibernateUtil.getSession().createQuery("from amu.m2sir.malodumont.beans.Like").list() );
-//		  already = isAlreadyLike(list, messageId, user);
-//		  if (already != -1) {
-//				hibernateUtil.getSession().delete(list.get(already));
-//				objectBuilder.add("like", "");
-//		}
-//		else {
-//			hibernateUtil.getSession().save(like);
-//			objectBuilder.add("like", "true");
-//		}
-//		hibernateUtil.getSession().getTransaction().commit();
-//		hibernateUtil.getSession().flush();
+		
+		Liike like = repository.findByLikeurAndMessageId(user, messageId);
+		 if (like != null) {
+			 repository.delete(like);
+			 objectBuilder.add("like", "");
+		}
+		else {
+			like = new Liike(messageId,user);
+			repository.save(like);
+			objectBuilder.add("like", "true");
+		}
 		
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		
