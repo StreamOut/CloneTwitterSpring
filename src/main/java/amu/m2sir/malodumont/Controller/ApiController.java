@@ -2,6 +2,7 @@ package amu.m2sir.malodumont.Controller;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,11 @@ public class ApiController {
 						@RequestParam(value = "pwd", required = false) String pwd) {
 		String sessionUser= (String) httpSession.getAttribute("user") ; // check l ' utilisateur ␣en␣cours;
 	    JsonArrayBuilder array = Json.createArrayBuilder();
+	    JsonObjectBuilder obj = Json.createObjectBuilder();
 	    if(action != null) {
 	    //␣ici␣gerer␣les␣conditions␣d'action : add, remove, lookup, etc
 	    	switch(action){
-				case "list" : array = ms.getMessages(sessionUser); break;
+				case "list" : obj = ms.getMessages(sessionUser); System.out.println("list");return obj.build().toString();
 				case "likeurs" : array = likeService.getLikes(); break;
 				case "like" : array = likeService.like(Long.valueOf(id), sessionUser); break;
 				case "add" : array = ms.addMessage(content,sessionUser); break;

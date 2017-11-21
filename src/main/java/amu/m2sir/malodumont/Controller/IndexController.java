@@ -17,7 +17,7 @@ public class IndexController {
 		System.out.println("lol");
 		if(sessionUser == null)
 			return "login";
-        return "index"; 
+        return "index2"; 
 	 }
 	
 	@GetMapping("/register")

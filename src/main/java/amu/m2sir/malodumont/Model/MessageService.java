@@ -21,8 +21,9 @@ public class MessageService {
 	
 	public MessageService (){}
 	
-	public JsonArrayBuilder getMessages(String user){
+	public JsonObjectBuilder getMessages(String user){
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+		JsonObjectBuilder objectBuilders = Json.createObjectBuilder();
 		Iterable<Message> list = repository.findAll();
 		
 		for (Message m : list) {
@@ -34,7 +35,8 @@ public class MessageService {
 			objectBuilder.add("nbMessage", nbMessage());
 			arrayBuilder.add(objectBuilder);
 		}
-		return arrayBuilder;
+		objectBuilders.add("messages", arrayBuilder);
+		return objectBuilders;
 	}
 	
 	public JsonArrayBuilder addMessage(String contenu, String user){
