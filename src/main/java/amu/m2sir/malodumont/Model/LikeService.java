@@ -5,6 +5,7 @@ import java.util.List;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class LikeService {
 	private LikeRepository repository;
 	@Autowired
 	private MessageRepository messageRepo;
+	@Autowired
+	private HttpSession httpSession;
 	
 	public LikeService(){}
 	
@@ -62,22 +65,13 @@ public class LikeService {
 			System.out.println("Get Likes : MessageId : "+ l.getMessage().getId() + " likeur "+ l.getLikeur());
 			objectBuilder.add("id", l.getMessage().getId());
 			objectBuilder.add("likeur", l.getLikeur());
+			if(httpSession.getAttribute("user").equals(l.getLikeur()))
+				objectBuilder.add("like", "true");
+			else
+				objectBuilder.add("like", "");
 			arrayBuilder.add(objectBuilder);
 		  }
 		return arrayBuilder;
 	}
-	
-	public void deleteLikes(Long messageId){
-		Iterable<Liike> list = repository.findAll();
-		  for (Liike l : list) {
-			System.out.println("deleteLikes : "+ l.getMessage().getId() +" message id :"+messageId);
-			if(l.getMessage().getId().equals(messageId)){
-				repository.delete(l);
-				System.out.println("Delete "+messageId);
-			}
-		  }
-
-	}
-
 
 }

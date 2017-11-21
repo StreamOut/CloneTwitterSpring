@@ -11,37 +11,26 @@ import javax.json.JsonObjectBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import amu.m2sir.malodumont.CloneTwitterSpringApplication;
 import amu.m2sir.malodumont.repository.MessageRepository;
 
 @Service
 public class MessageService {
-	@Autowired
-	private LikeService likeService;
+
 	@Autowired
 	private MessageRepository repository;
 	
-	public MessageService (){
-//		hibernateUtil.executeUpdate( "CREATE TABLE IF NOT EXISTS message " +
-//                "(id int, contenu varchar(255), date varchar(255), auteur varchar(255)); ");
-		
-	}
+	public MessageService (){}
 	
 	public JsonArrayBuilder getMessages(String user){
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		Iterable<Message> list = repository.findAll();
 		
-		//List<Like> Likelist = new ArrayList<Like>(hibernateUtil.getSession().createQuery("from amu.m2sir.malodumont.model.Like").list() );
 		for (Message m : list) {
 			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 			objectBuilder.add("contenu", m.getContenu());
 			objectBuilder.add("date", m.getDate());
 			objectBuilder.add("auteur", m.getAuteur());
 			objectBuilder.add("id", m.getId());
-//			if(likeService.isAlreadyLike(Likelist, m.getId(), user) != -1)
-//				objectBuilder.add("like", "true");
-//			else
-				objectBuilder.add("like", "");
 			objectBuilder.add("nbMessage", nbMessage());
 			arrayBuilder.add(objectBuilder);
 		}
@@ -90,8 +79,6 @@ public class MessageService {
 		if (message != null) {
 			repository.delete(message);
 		}
-
-		likeService.deleteLikes(new Long(id));
 		objectBuilder.add("id", id);
 		objectBuilder.add("nbMessage", nbMessage());
 		arrayBuilder.add(objectBuilder);

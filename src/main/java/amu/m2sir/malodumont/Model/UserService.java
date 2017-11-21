@@ -56,5 +56,13 @@ public class UserService {
 		arrayBuilder.add(objectBuilder);
 		return arrayBuilder;
 	}
+	
+	public JsonArrayBuilder logout(){
+		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
+		httpSession.setAttribute("user", null);
+		arrayBuilder.add(objectBuilder);
+		return arrayBuilder;
+	}
 
 }

@@ -21,17 +21,14 @@
   <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="message">Twitter</a>
+        <a class="navbar-brand" href="/">Twitter</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">Sign up</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Login</a>
+              <a class="nav-link" onclick='logOut()'>Log Out</a>
             </li>
           </ul>
         </div>
@@ -53,6 +50,26 @@
 	$("#usr").on("keypress", function(e) {
 		runScript(e, this);
 	});
+	
+	function logOut(){
+		console.log("log out");
+		jQuery.ajax({
+			type: 'GET',
+		    url: '/api',
+		    data: {
+		    	action : 'logout'
+		    },
+		    success: function (result) {
+		        console.log("L'appel Ajax est une réussite.");
+		        console.log(result);
+		        window.location.href='/';
+		    },
+		    error: function () {
+		        console.log("L'appel Ajax est un échec.");
+		        alert("error log out");
+		    }
+		});
+	}
 	
 	function loadMessage(){
 		jQuery.ajax({
@@ -180,6 +197,7 @@
 		        $.each(result, function(index, element) {
 		        	console.log("like " +result);
 		        	$("#tweets #"+element.id+" #like-footer").prepend(element.likeur+" ");
+		        	likeMessage(element.id, element.like);
 		        });
 		    },
 		    error: function (result) {

@@ -21,17 +21,17 @@
   <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="message">Twitter</a>
+        <a class="navbar-brand" href="/">Twitter</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">Sign up</a>
+              <a class="nav-link" href="/register">Sign up</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Login</a>
+              <a class="nav-link" href="/">Login</a>
             </li>
           </ul>
         </div>
@@ -68,7 +68,7 @@
 		        console.log("L'appel Ajax est une réussite.");
 		        console.log(result);
 		        $.each(result, function(index, element) {
-		        	verify(element.auth);
+		        	verify(element);
 		        });
 		    },
 		    error: function () {
@@ -78,8 +78,8 @@
 		});
 	}
 	
-	function verify(auth){
-		if(auth){
+	function verify(element){
+		if(element.auth){
 			jQuery.ajax({
 				type: 'GET',
 			    url: '/',
@@ -94,7 +94,7 @@
 			});
 		}
 		else 
-			alert(result.message)
+			alert(element.message)
 	}
 	
 </script>

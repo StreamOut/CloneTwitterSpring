@@ -44,7 +44,7 @@ public class ApiController {
 				case "remove" : array = ms.deleteMessage(id); break;
 				case "registration" : array = userService.registration(mail, pwd); break;
 				case "login" : array = userService.connect(mail, pwd); break;
-				case "loadRegistration" : return "registration";
+				case "logout" : System.out.println("log out"); array = userService.logout(); break;
 				default : break;
 	    	}
 	    }
