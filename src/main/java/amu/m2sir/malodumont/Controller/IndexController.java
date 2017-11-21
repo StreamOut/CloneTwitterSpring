@@ -14,6 +14,7 @@ public class IndexController {
 	@GetMapping("/")
     public String index() {
 		String sessionUser= (String) httpSession.getAttribute("user") ; // check l ' utilisateur ␣en␣cours
+		System.out.println("lol");
 		if(sessionUser == null)
 			return "login";
         return "index"; 
