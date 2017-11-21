@@ -57,7 +57,7 @@
 	function loadMessage(){
 		jQuery.ajax({
 			type: 'GET',
-		    url: 'http://localhost:9999/api',
+		    url: '/api',
 		    data: {
 		    	action : 'list'
 		    },
@@ -80,7 +80,7 @@
 	function onSuppClick (id) {
 		jQuery.ajax({
 			type: 'GET',
-		    url: 'http://localhost:9999/api',
+		    url: '/api',
 		    data: {
 		    	action : 'remove',
 		    	id : id
@@ -107,7 +107,7 @@
 		if(event.keyCode == 13){
 			jQuery.ajax({
 				type: 'GET',
-			    url: 'http://localhost:9999/api',
+			    url: '/api',
 			    data: {
 			    	action : 'add',
 			    	content : input.value
@@ -130,7 +130,7 @@
 	function onLikeClick(messageId){
 		jQuery.ajax({
 			type: 'GET',
-		    url: 'http://localhost:9999/api',
+		    url: '/api',
 		    data: {
 		    	action : 'like',
 		    	id : messageId
@@ -170,7 +170,7 @@
 	function addLikeurs(){
 		jQuery.ajax({
 			type: 'GET',
-		    url: 'http://localhost:9999/api',
+		    url: '/api',
 		    data: {
 		    	action : 'likeurs'
 		    },

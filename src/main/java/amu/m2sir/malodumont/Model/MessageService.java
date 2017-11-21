@@ -34,7 +34,6 @@ public class MessageService {
 		//List<Like> Likelist = new ArrayList<Like>(hibernateUtil.getSession().createQuery("from amu.m2sir.malodumont.model.Like").list() );
 		for (Message m : list) {
 			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-			System.out.println("LOOOOOL : " + m.getContenu());
 			objectBuilder.add("contenu", m.getContenu());
 			objectBuilder.add("date", m.getDate());
 			objectBuilder.add("auteur", m.getAuteur());
@@ -50,7 +49,6 @@ public class MessageService {
 	}
 	
 	public JsonArrayBuilder addMessage(String contenu, String user){
-		System.out.println("Contenu :" + contenu);
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
 		Message message;
@@ -60,7 +58,6 @@ public class MessageService {
 		message = new Message(contenu, formater.format(aujourdhui), user);
 		
 		repository.save(message);
-		System.out.println(message.getContenu());
 
 		objectBuilder.add("contenu", message.getContenu());
 		objectBuilder.add("date", message.getDate());

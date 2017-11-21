@@ -38,14 +38,12 @@ public class UserService {
 	}
 	
 	public JsonArrayBuilder registration(String mail, String pwd){
-		System.out.println("lol");
 		User user = new User(mail, pwd);
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		JsonObjectBuilder objectBuilder =Json.createObjectBuilder();
 
 		User userOld = (User) repository.findOne(mail);
 		if(userOld == null){
-			System.out.println("okay");
 			repository.save(user);
 			httpSession.setAttribute("user", mail);
 			objectBuilder.add("user", mail);

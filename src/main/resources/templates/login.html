@@ -48,7 +48,7 @@
       <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd"/>
     </div>
     <button type="button" class="btn btn-success" onclick='signIn(email.value, pwd.value)'>Let me in !</button>
-    <button type="button" class="btn btn-default" onclick='registration()'>Registration</button>
+    <button type="button" class="btn btn-default" onclick="window.location.href='/register'">Registration</button>
 </div>
 
 
@@ -58,7 +58,7 @@
 		console.log("email : "+mail+" pass : "+pwd);
 		jQuery.ajax({
 			type: 'GET',
-		    url: 'http://localhost:9999/api',
+		    url: '/api',
 		    data: {
 		    	action : 'login',
 		    	mail : mail,
@@ -78,29 +78,11 @@
 		});
 	}
 	
-	function registration (){
-		jQuery.ajax({
-			type: 'GET',
-		    url: 'http://localhost:9999/api',
-		    data: {
-		    	action  : 'loadRegistration'
-		    },
-		    success: function (result) {
-		        console.log("L'appel Ajax est une réussite.");
-		        console.log(result); 
-		    },
-		    error: function () {
-		        console.log("L'appel Ajax est un échec.");
-		        alert("Registration error");
-		    }
-		});
-	}
-	
 	function verify(auth){
 		if(auth){
 			jQuery.ajax({
 				type: 'GET',
-			    url: 'http://localhost:9999/message',
+			    url: '/',
 			    success: function (result) {
 			        console.log("L'appel Ajax est une réussite.");
 			        window.location.reload();

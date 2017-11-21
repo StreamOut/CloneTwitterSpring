@@ -59,28 +59,16 @@
 		console.log("email : "+mail+" pass : "+pwd);
 		jQuery.ajax({
 			type: 'GET',
-		    url: 'http://localhost:9999/api',
+		    url: '/api',
 		    data: {
 		    	action : 'registration',
-		    	user : mail,
+		    	mail : mail,
 		    	pwd : pwd
 		    },
 		    success: function (result) {
 		        console.log("L'appel Ajax est une réussite.");
 		        console.log(result);
-		        jQuery.ajax({
-					type: 'GET',
-				    url: 'http://localhost:9999/message',
-				    success: function (result) {
-				        console.log("L'appel Ajax est une réussite.");
-				        window.location.reload();
-				    },
-				    error: function () {
-				        console.log("L'appel Ajax est un échec.");
-				        alert("Verify error");
-				    }
-				});
-		        
+		        window.location.href='/';
 		    },
 		    error: function () {
 		        console.log("L'appel Ajax est un échec.");
